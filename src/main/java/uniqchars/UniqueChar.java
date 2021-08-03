@@ -1,34 +1,23 @@
 package uniqchars;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class UniqueChar {
 
     public long solution(String value) {
         if (Objects.isNull(value)) return 0;
 
-        AtomicReference<Map<Character, Integer>> map = new AtomicReference<>();
-        map.set(new HashMap<>());
+        final IntStream chars = value.chars();
 
-        final HashMap<Character, Integer> characterIntegerHashMap = new HashMap<>();
-        for (int x =0; x < value.length(); x++ ) {
-            final Character character = Character.valueOf(value.charAt(x));
+        final HashMap<Character, Long> collect = chars.mapToObj(i -> (char) i)
+                .collect(Collectors.groupingBy(c -> c, HashMap::new, Collectors.counting()));
 
-            final Integer count = characterIntegerHashMap.get(character);
-            if (null == count) {
-                characterIntegerHashMap.put(character, 1);
-                continue;
-            }
-
-            characterIntegerHashMap.put(character, count+1);
-         }
-
-        return characterIntegerHashMap.values()
+        return collect.values()
                 .stream()
-                .filter(v -> v.equals(1))
+                .filter(v -> v.equals(1L))
                 .count();
     }
 }

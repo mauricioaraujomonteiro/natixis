@@ -3,6 +3,8 @@ package mergetomaps;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MergeMaps {
 
@@ -10,22 +12,12 @@ public class MergeMaps {
     public void solution(Map<String, Long> m1, Map<String, Long> m2) {
 
 
-        final Set<String> m1Keys = m1.keySet();
-        final Set<String> m2Keys = m2.keySet();
-        final Map<String, Long> merged = new HashMap<>();
-        for (String key : m1Keys ){
-            if (m2Keys.contains(key)) {
-                merged.put(key, m2.get(key) + m1.get(key));
-                continue;
-            }
-            merged.put(key, m1.get(key));
-        }
-
-        for (String key : m2Keys) {
-            if (!m1Keys.contains(key)) {
-                merged.put(key, m2.get(key));
-            }
-        }
+        final Map<String, Long> merged = Stream.of(m1, m2)
+                .flatMap(map -> map.entrySet().stream())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (v1, v2) -> v1 + v2));
 
         System.out.println(merged);
     }
