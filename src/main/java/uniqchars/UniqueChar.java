@@ -30,30 +30,5 @@ public class UniqueChar {
                 .stream()
                 .filter(v -> v.equals(1))
                 .count();
-//        value.chars()
-//                .parallel()
-//                .mapToObj(c -> (char) c)
-//                .forEach( v -> {
-//                    final Map<Character, Integer> characterIntegerMap = map.get();
-//                    if (null == characterIntegerMap.get(v)) characterIntegerMap.put(v, 0);
-//
-//                    final Integer integer = characterIntegerMap.get(v) + 1;
-//                    characterIntegerMap.put(v, integer);
-//                });
-//
-//
-//        final Map<Character, Integer> characterIntegerMap = map.get();
-//
-//        return characterIntegerMap.values().stream().filter(v -> v.equals(1))
-//                .count();
-
-//        value.chars()
-//
-//                .flatMap(Arrays.stream())
-//                .reduce(0, (a, b) -> a - b)
-
-
-
-        //return count;
     }
 }
