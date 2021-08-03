@@ -25,15 +25,15 @@ public class CSVFilterService implements ProcessingFilter {
 
     @Override
     public boolean filter(String value, Path excludedFile) {
-        final Set<String> values = getValues(excludedFile);
+        final Set<String> contentToBeExcluded = getContentToBeExcluded(excludedFile);
 
         return Arrays.stream(columnsToFilter)
                 .parallel()
-                .map(column -> getFieldValue(value, column))
-                .anyMatch(toFilter -> values.contains(toFilter));
+                .map(column -> getContentToBeCompared(value, column))
+                .anyMatch(contentToBeCompared -> contentToBeExcluded.contains(contentToBeCompared));
     }
 
-    private String getFieldValue(String value, Integer column) {
+    private String getContentToBeCompared(String value, Integer column) {
         final String[] split = value.split(DELIMITER);
         if (column >= split.length){
             throw new IllegalArgumentException(String.format("Line does not have %s columns", column));
@@ -41,7 +41,7 @@ public class CSVFilterService implements ProcessingFilter {
         return split[column];
     }
 
-    private Set<String> getValues(Path fileToCompare) {
+    private Set<String> getContentToBeExcluded(Path fileToCompare) {
         try(Stream<String> stream = Files.lines(fileToCompare)) {
 
             String filename = fileToCompare.getFileName().toString();
